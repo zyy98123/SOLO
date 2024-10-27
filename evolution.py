@@ -129,6 +129,7 @@ def run_inference_and_print_outputs(
 ):
     tokens, attention_masks, vision_patches, vision_patch_indices = prepare_inputs(inputs, device=DEVICE)
     # generate text
+    vision_patches = torch.Tensor(vision_patches).float()
     with torch.no_grad():
 
         outputs = model.generate(
