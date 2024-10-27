@@ -18,11 +18,18 @@ from image_utils import (
     visualize_patches
 )
 
-from scripts.model.modeling_solo import SoloForCausalLM
-MODEL_PATH = f"{project_root}/data/models/SOLO-7B"
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from scripts.model.modeling_solo import SoloForCausalLM, SoloConfig
+MODEL_NAME = "YangyiYY/SOLO-7B"
 
-tokenizer = LlamaTokenizer.from_pretrained(MODEL_PATH)
-model = SoloForCausalLM.from_pretrained(MODEL_PATH, torch_dtype=torch.bfloat16)
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+base_model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
+
+config = SoloConfig.from_pretrained(MODEL_NAME)
+
+model = SoloForCausalLM(config)
+
+model.load_state_dict(base_model.state_dict(), strict=False)
 
 DEVICE = "cuda:0"
 model = model.to(DEVICE)
