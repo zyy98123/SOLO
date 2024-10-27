@@ -105,7 +105,7 @@ def visualize_outputs(inputs, tokens, outputs):
 
 def run_inference_and_print_outputs(
     inputs,
-    do_sample=False,
+    do_sample=True,
     top_p=0.95,
     max_new_tokens=30,
 ):
