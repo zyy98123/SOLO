@@ -269,7 +269,7 @@ class MultimodalMistralModel(MistralModel):
 
             # === Handle vision patches ===
             vision_embeds = self.embed_vision_patch(
-                vision_patches
+                vision_patches.float()
             )  # (n_patches, hidden_size)
             vision_embeds = torch.cat(
                 [
