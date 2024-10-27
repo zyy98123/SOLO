@@ -40,44 +40,43 @@ B_INST, E_INST = "[INST]", "[/INST]"
 
 def prepare_inputs(inputs: list, device: str):
     NON_VISION_TOKEN = -1
-    
+
     tokens = []
     attention_masks = []
     vision_patch_indices = []
     vision_patches = []
-    
+
     for i in inputs:
         if isinstance(i, torch.Tensor):
-            # this is patches
+            # 生成视觉补丁部分
+            import pdb; pdb.set_trace()  # 插入断点检查补丁生成逻辑
+            
             patches = i
             n_rows, n_cols = patches.shape[:2]
             n_patches = n_rows * n_cols
             patches = patches.view(n_patches, -1)
-            
-            # --- Generate tokens for patches ---
+
+            # ---
             img_tokens = ["<vision>"]
             cur_patch_indices = [NON_VISION_TOKEN]
 
             for row_idx in range(n_rows):
                 if row_idx != 0:
-                    # Append row separator only if it's not the first row
-                    img_tokens.append(f"<vrow_sep>")
+                    img_tokens.append("<vrow_sep>")
                     cur_patch_indices.append(NON_VISION_TOKEN)
                 for col_idx in range(n_cols):
-                    img_tokens.append(f"<vpatch>")
+                    img_tokens.append("<vpatch>")
                     cur_patch_indices.append(len(vision_patches) + row_idx * n_cols + col_idx)
 
-            img_tokens.append("<vision>")
+            img_tokens.append("</vision>")
             cur_patch_indices.append(NON_VISION_TOKEN)
-            
-            # --- Tokenize image tokens ---
+
+            # ---
             cur_tokens = torch.Tensor(tokenizer.convert_tokens_to_ids(img_tokens))
             cur_attention_mask = [1] * len(cur_tokens)
 
-            # Ensure the lengths match
             assert len(cur_tokens) == len(cur_patch_indices), f"{len(cur_tokens)} != {len(cur_patch_indices)}"
-            
-            # Extend lists
+
             tokens.extend(cur_tokens)
             attention_masks.extend(cur_attention_mask)
             vision_patch_indices.extend(cur_patch_indices)
@@ -89,15 +88,10 @@ def prepare_inputs(inputs: list, device: str):
             cur_tokens = _tokenized["input_ids"].squeeze(0)
             cur_attention_mask = _tokenized["attention_mask"].squeeze(0)
 
-            # Print for debugging
-            print(f"cur_tokens: {cur_tokens}")
-            print(f"cur_attention_mask: {cur_attention_mask}")
-
             tokens.extend(cur_tokens)
             attention_masks.extend(cur_attention_mask)
             vision_patch_indices.extend([NON_VISION_TOKEN] * len(cur_tokens))
 
-    # Convert to tensor
     tokens = torch.Tensor(tokens).long()
     attention_masks = torch.Tensor(attention_masks).long()
     if len(vision_patches) > 0:
@@ -106,15 +100,16 @@ def prepare_inputs(inputs: list, device: str):
         vision_patches = None
     vision_patch_indices = torch.Tensor(vision_patch_indices).long()
 
+    # 检查长度是否一致
+    import pdb; pdb.set_trace()  # 在这里插入断点，检查tokens和vision_patch_indices的长度和内容
+    assert tokens.shape == vision_patch_indices.shape, "tokens and vision_patch_indices should have the same shape"
+
     # move to device
     tokens = tokens.to(device)
     attention_masks = attention_masks.to(device)
     vision_patch_indices = vision_patch_indices.to(device)
     if vision_patches is not None:
         vision_patches = vision_patches.to(device)
-
-    # Check if tokens and vision_patch_indices have the same shape
-    assert tokens.shape == vision_patch_indices.shape, "tokens and vision_patch_indices should have the same shape"
 
     return tokens, attention_masks, vision_patches, vision_patch_indices
 
