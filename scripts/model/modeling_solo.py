@@ -101,16 +101,16 @@ class SoloConfig(PretrainedConfig):
 
     def __init__(
         self,
-        vocab_size=32000,
+        vocab_size=33029,
         hidden_size=4096,
         intermediate_size=14336,
         num_hidden_layers=32,
         num_attention_heads=32,
         num_key_value_heads=8,
         hidden_act="silu",
-        max_position_embeddings=4096 * 32,
+        max_position_embeddings=32768,
         initializer_range=0.02,
-        rms_norm_eps=1e-6,
+        rms_norm_eps=1e-5,
         use_cache=True,
         pad_token_id=None,
         bos_token_id=1,
@@ -120,6 +120,7 @@ class SoloConfig(PretrainedConfig):
         sliding_window=4096,
         attention_dropout=0.0,
         vision_patch_size=32,
+        head_dim=128,
         **kwargs,
     ):
         self.vocab_size = vocab_size
@@ -129,7 +130,6 @@ class SoloConfig(PretrainedConfig):
         self.num_hidden_layers = num_hidden_layers
         self.num_attention_heads = num_attention_heads
         self.sliding_window = sliding_window
-        self.head_dim = kwargs.get('head_dim', 64)
 
         # for backward compatibility
         if num_key_value_heads is None:
