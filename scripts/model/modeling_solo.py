@@ -122,6 +122,8 @@ class SoloConfig(PretrainedConfig):
         vision_patch_size=32,
         **kwargs,
     ):
+        self.head_dim = hidden_size // num_attention_heads
+        
         self.vocab_size = vocab_size
         self.max_position_embeddings = max_position_embeddings
         self.hidden_size = hidden_size
