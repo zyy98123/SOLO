@@ -123,7 +123,7 @@ class SoloConfig(PretrainedConfig):
         **kwargs,
     ):
         self.head_dim = hidden_size // num_attention_heads
-        
+
         self.vocab_size = vocab_size
         self.max_position_embeddings = max_position_embeddings
         self.hidden_size = hidden_size
@@ -420,6 +420,7 @@ class SoloForCausalLM(MistralForCausalLM):
         output_attentions: Optional[bool] = None,
         output_hidden_states: Optional[bool] = None,
         return_dict: Optional[bool] = None,
+        **kwargs,
     ) -> Union[Tuple, CausalLMOutputWithPast]:
         r"""
         Args:
