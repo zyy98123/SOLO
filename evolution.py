@@ -89,12 +89,12 @@ def prepare_inputs(inputs: list, device: str):
     else:
         vision_patches = None
     vision_patch_indices = torch.Tensor(np.array(vision_patch_indices)).long()
-    vision_patch_indices = torch.clamp(vision_patch_indices, min=0, max=vision_patches.shape[0] - 1)
-
 
     # Replace any -1 with valid index pointing to a dummy zero embedding (if needed)
     if vision_patches is not None:
-        vision_patch_indices[vision_patch_indices == NON_VISION_TOKEN] = len(vision_patches)
+        dummy_patch = torch.zeros_like(vision_patches[0]).unsqueeze(0)
+        vision_patches = torch.cat([vision_patches, dummy_patch], dim=0)
+        vision_patch_indices = torch.clamp(vision_patch_indices, min=0, max=vision_patches.shape[0] - 1)
     
     # move to device
     tokens = tokens.to(device)
