@@ -96,6 +96,12 @@ def prepare_inputs(inputs: list, device: str):
         vision_patches = torch.cat([vision_patches, dummy_patch], dim=0)
         vision_patch_indices = torch.clamp(vision_patch_indices, min=0, max=vision_patches.shape[0] - 1)
     
+    # Ensure vision_patch_indices matches the shape of tokens
+    vision_patch_indices = vision_patch_indices[:tokens.shape[0]]
+    if vision_patch_indices.shape[0] < tokens.shape[0]:
+        padding = torch.full((tokens.shape[0] - vision_patch_indices.shape[0],), NON_VISION_TOKEN, dtype=torch.long)
+        vision_patch_indices = torch.cat([vision_patch_indices, padding], dim=0)
+    
     # move to device
     tokens = tokens.to(device)
     attention_masks = attention_masks.to(device)
