@@ -36,6 +36,7 @@ model = model.to(DEVICE)
 
 B_INST, E_INST = "[INST]", "[/INST]"
 
+B_INST, E_INST = "[INST]", "[/INST]"
 def prepare_inputs(inputs: list, device: str):
     NON_VISION_TOKEN = -1
     
@@ -52,18 +53,27 @@ def prepare_inputs(inputs: list, device: str):
             n_patches = n_rows * n_cols
             patches = patches.view(n_patches, -1)
             
+            # ---
             img_tokens = ["<vision>"]
             cur_patch_indices = [NON_VISION_TOKEN]
             for row_idx in range(n_rows):
                 for col_idx in range(n_cols):
                     if row_idx != 0 and col_idx == 0: # when new row starts
-                        img_tokens.append("<vrow_sep>")
+                        img_tokens.append(f"<vrow_sep>")
                         cur_patch_indices.append(NON_VISION_TOKEN)
-                    img_tokens.append("<vpatch>")
-                    cur_patch_indices.append(len(img_tokens) - 1)
+                    img_tokens.append(f"<vpatch>")
+                    cur_patch_indices.append(len(vision_patches) + row_idx * n_cols + col_idx)
+            img_tokens.append("<vision>")
+            cur_patch_indices.append(NON_VISION_TOKEN)
             
+            # ---
+            # NOTE tokenizer(xxx) will NOT work here
             cur_tokens = torch.Tensor(tokenizer.convert_tokens_to_ids(img_tokens))
             cur_attention_mask = [1] * len(cur_tokens)
+            # print(f"cur_tokens: {cur_tokens}")
+            # print(f"cur_attention_mask: {cur_attention_mask}")
+            # print(f"cur_patch_indices: {cur_patch_indices}")
+            assert len(cur_tokens) == len(cur_patch_indices), f"{len(cur_tokens)} != {len(cur_patch_indices)}"
             
             tokens.extend(cur_tokens)
             attention_masks.extend(cur_attention_mask)
@@ -85,31 +95,17 @@ def prepare_inputs(inputs: list, device: str):
     tokens = torch.Tensor(tokens).long()
     attention_masks = torch.Tensor(attention_masks).long()
     if len(vision_patches) > 0:
-        vision_patches = torch.Tensor(np.array(vision_patches)).bfloat16()
+        vision_patches = torch.Tensor(vision_patches).bfloat16()
     else:
         vision_patches = None
-    vision_patch_indices = torch.Tensor(np.array(vision_patch_indices)).long()
+    vision_patch_indices = torch.Tensor(vision_patch_indices).long()
 
-    # Replace any -1 with valid index pointing to a dummy zero embedding (if needed)
-    if vision_patches is not None:
-        dummy_patch = torch.zeros_like(vision_patches[0]).unsqueeze(0)
-        vision_patches = torch.cat([vision_patches, dummy_patch], dim=0)
-        vision_patch_indices = torch.clamp(vision_patch_indices, min=0, max=vision_patches.shape[0] - 1)
-    
-    # Ensure vision_patch_indices matches the shape of tokens
-    if vision_patch_indices.shape[0] > tokens.shape[0]:
-        vision_patch_indices = vision_patch_indices[:tokens.shape[0]]
-    elif vision_patch_indices.shape[0] < tokens.shape[0]:
-        padding = torch.full((tokens.shape[0] - vision_patch_indices.shape[0],), NON_VISION_TOKEN, dtype=torch.long)
-        vision_patch_indices = torch.cat([vision_patch_indices, padding], dim=0)
-    
     # move to device
     tokens = tokens.to(device)
     attention_masks = attention_masks.to(device)
     vision_patch_indices = vision_patch_indices.to(device)
     if vision_patches is not None:
         vision_patches = vision_patches.to(device)
-
     return tokens, attention_masks, vision_patches, vision_patch_indices
 
 
@@ -127,14 +123,17 @@ def visualize_outputs(inputs, tokens, outputs):
 
 def run_inference_and_print_outputs(
     inputs,
-    do_sample=True,
+    do_sample=False,
     top_p=0.95,
     max_new_tokens=30,
 ):
     tokens, attention_masks, vision_patches, vision_patch_indices = prepare_inputs(inputs, device=DEVICE)
+    # generate text
     with torch.no_grad():
+
         outputs = model.generate(
             input_ids=tokens.unsqueeze(0),
+            # model_kwargs
             attention_mask=attention_masks.unsqueeze(0),
             vision_patches=vision_patches,
             vision_patch_indices=vision_patch_indices.unsqueeze(0),
@@ -142,7 +141,9 @@ def run_inference_and_print_outputs(
                 do_sample=do_sample,
                 top_p=top_p,
                 max_new_tokens=max_new_tokens,
+                # repetition_penalty=1.2,
                 pad_token_id=tokenizer.eos_token_id,
+                # anything above 32000 (vision related tokens) will be suppressed
                 suppress_tokens=[i for i in range(32000, len(tokenizer))],
             ),
         )
