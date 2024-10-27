@@ -90,6 +90,10 @@ def prepare_inputs(inputs: list, device: str):
         vision_patches = None
     vision_patch_indices = torch.Tensor(np.array(vision_patch_indices)).long()
 
+    # Replace any -1 with valid index pointing to a dummy zero embedding (if needed)
+    if vision_patches is not None:
+        vision_patch_indices[vision_patch_indices == NON_VISION_TOKEN] = len(vision_patches)
+    
     # move to device
     tokens = tokens.to(device)
     attention_masks = attention_masks.to(device)
@@ -98,6 +102,7 @@ def prepare_inputs(inputs: list, device: str):
         vision_patches = vision_patches.to(device)
 
     return tokens, attention_masks, vision_patches, vision_patch_indices
+
 
 def visualize_outputs(inputs, tokens, outputs):
     for idx, s in enumerate(inputs):
