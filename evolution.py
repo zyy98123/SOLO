@@ -37,6 +37,7 @@ model = model.to(DEVICE)
 B_INST, E_INST = "[INST]", "[/INST]"
 
 B_INST, E_INST = "[INST]", "[/INST]"
+
 def prepare_inputs(inputs: list, device: str):
     NON_VISION_TOKEN = -1
     
@@ -56,14 +57,17 @@ def prepare_inputs(inputs: list, device: str):
             # --- Generate tokens for patches ---
             img_tokens = ["<vision>"]
             cur_patch_indices = [NON_VISION_TOKEN]
+
             for row_idx in range(n_rows):
                 if row_idx != 0:
-                    img_tokens.append("<vrow_sep>")
+                    # Append row separator only if it's not the first row
+                    img_tokens.append(f"<vrow_sep>")
                     cur_patch_indices.append(NON_VISION_TOKEN)
                 for col_idx in range(n_cols):
-                    img_tokens.append("<vpatch>")
+                    img_tokens.append(f"<vpatch>")
                     cur_patch_indices.append(len(vision_patches) + row_idx * n_cols + col_idx)
-            img_tokens.append("</vision>")
+
+            img_tokens.append("<vision>")
             cur_patch_indices.append(NON_VISION_TOKEN)
             
             # --- Tokenize image tokens ---
@@ -102,17 +106,18 @@ def prepare_inputs(inputs: list, device: str):
         vision_patches = None
     vision_patch_indices = torch.Tensor(vision_patch_indices).long()
 
-    # Move to device
+    # move to device
     tokens = tokens.to(device)
     attention_masks = attention_masks.to(device)
     vision_patch_indices = vision_patch_indices.to(device)
     if vision_patches is not None:
         vision_patches = vision_patches.to(device)
-    
+
     # Check if tokens and vision_patch_indices have the same shape
     assert tokens.shape == vision_patch_indices.shape, "tokens and vision_patch_indices should have the same shape"
 
     return tokens, attention_masks, vision_patches, vision_patch_indices
+
 
 
 def visualize_outputs(inputs, tokens, outputs):
