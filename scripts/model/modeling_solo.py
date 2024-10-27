@@ -410,8 +410,8 @@ class SoloForCausalLM(MistralForCausalLM):
         self,
         input_ids: torch.LongTensor = None,
         attention_mask: Optional[torch.Tensor] = None,
-        vision_patch_indices: torch.LongTensor = None,  # (batch_size, seq_length), "-1" for text token
-        vision_patches: torch.FloatTensor = None,  # (n_patches, 32 * 32 * 3)
+        vision_patch_indices: torch.LongTensor = None,
+        vision_patches: torch.FloatTensor = None,
         position_ids: Optional[torch.LongTensor] = None,
         past_key_values: Optional[List[torch.FloatTensor]] = None,
         inputs_embeds: Optional[torch.FloatTensor] = None,
@@ -420,35 +420,11 @@ class SoloForCausalLM(MistralForCausalLM):
         output_attentions: Optional[bool] = None,
         output_hidden_states: Optional[bool] = None,
         return_dict: Optional[bool] = None,
+        **kwargs  # 使用 **kwargs 捕获未定义的关键字参数
     ) -> Union[Tuple, CausalLMOutputWithPast]:
-        
+        # 删除不需要的参数，例如 'cache_position'
         if 'cache_position' in kwargs:
             del kwargs['cache_position']
-        r"""
-        Args:
-            labels (`torch.LongTensor` of shape `(batch_size, sequence_length)`, *optional*):
-                Labels for computing the masked language modeling loss. Indices should either be in `[0, ...,
-                config.vocab_size]` or -100 (see `input_ids` docstring). Tokens with indices set to `-100` are ignored
-                (masked), the loss is only computed for the tokens with labels in `[0, ..., config.vocab_size]`.
-
-        Returns:
-
-        Example:
-
-        ```python
-        >>> from transformers import AutoTokenizer, MistralForCausalLM
-
-        >>> model = MistralForCausalLM.from_pretrained("mistralai/Mistral-7B-v0.1")
-        >>> tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-v0.1")
-
-        >>> prompt = "Hey, are you conscious? Can you talk to me?"
-        >>> inputs = tokenizer(prompt, return_tensors="pt")
-
-        >>> # Generate
-        >>> generate_ids = model.generate(inputs.input_ids, max_length=30)
-        >>> tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
-        "Hey, are you conscious? Can you talk to me?\nI'm not conscious, but I can talk to you."
-        ```"""
 
         output_attentions = (
             output_attentions
@@ -464,7 +440,7 @@ class SoloForCausalLM(MistralForCausalLM):
             return_dict if return_dict is not None else self.config.use_return_dict
         )
 
-        # decoder outputs consists of (dec_features, layer_state, dec_hidden, dec_attn)
+        # 调用底层模型的 forward 方法
         outputs = self.model(
             input_ids=input_ids,
             attention_mask=attention_mask,
@@ -477,6 +453,7 @@ class SoloForCausalLM(MistralForCausalLM):
             output_attentions=output_attentions,
             output_hidden_states=output_hidden_states,
             return_dict=return_dict,
+            **kwargs  # 将其余参数传递给底层模型
         )
 
         hidden_states = outputs[0]
