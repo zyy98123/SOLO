@@ -89,7 +89,7 @@ def prepare_inputs(inputs: list, device: str):
     else:
         vision_patches = None
     vision_patch_indices = torch.Tensor(np.array(vision_patch_indices)).long()
-    vision_patch_indices = torch.clamp(vision_patch_indices, min=0, max=vision_embeds.shape[0] - 1)
+    vision_patch_indices = torch.clamp(vision_patch_indices, min=0, max=vision_patches.shape[0] - 1)
 
 
     # Replace any -1 with valid index pointing to a dummy zero embedding (if needed)
