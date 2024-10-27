@@ -57,9 +57,9 @@ def prepare_inputs(inputs: list, device: str):
             for row_idx in range(n_rows):
                 for col_idx in range(n_cols):
                     if row_idx != 0 and col_idx == 0: # when new row starts
-                        img_tokens.append(f"<vrow_sep>")
+                        img_tokens.append("<vrow_sep>")
                         cur_patch_indices.append(NON_VISION_TOKEN)
-                    img_tokens.append(f"<vpatch>")
+                    img_tokens.append("<vpatch>")
                     cur_patch_indices.append(len(img_tokens) - 1)
             
             cur_tokens = torch.Tensor(tokenizer.convert_tokens_to_ids(img_tokens))
@@ -97,8 +97,9 @@ def prepare_inputs(inputs: list, device: str):
         vision_patch_indices = torch.clamp(vision_patch_indices, min=0, max=vision_patches.shape[0] - 1)
     
     # Ensure vision_patch_indices matches the shape of tokens
-    vision_patch_indices = vision_patch_indices[:tokens.shape[0]]
-    if vision_patch_indices.shape[0] < tokens.shape[0]:
+    if vision_patch_indices.shape[0] > tokens.shape[0]:
+        vision_patch_indices = vision_patch_indices[:tokens.shape[0]]
+    elif vision_patch_indices.shape[0] < tokens.shape[0]:
         padding = torch.full((tokens.shape[0] - vision_patch_indices.shape[0],), NON_VISION_TOKEN, dtype=torch.long)
         vision_patch_indices = torch.cat([vision_patch_indices, padding], dim=0)
     
@@ -110,6 +111,7 @@ def prepare_inputs(inputs: list, device: str):
         vision_patches = vision_patches.to(device)
 
     return tokens, attention_masks, vision_patches, vision_patch_indices
+
 
 
 def visualize_outputs(inputs, tokens, outputs):
