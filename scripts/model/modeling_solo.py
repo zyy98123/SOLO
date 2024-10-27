@@ -122,8 +122,6 @@ class SoloConfig(PretrainedConfig):
         vision_patch_size=32,
         **kwargs,
     ):
-        self.head_dim = hidden_size // num_attention_heads
-
         self.vocab_size = vocab_size
         self.max_position_embeddings = max_position_embeddings
         self.hidden_size = hidden_size
@@ -269,7 +267,7 @@ class MultimodalMistralModel(MistralModel):
 
             # === Handle vision patches ===
             vision_embeds = self.embed_vision_patch(
-                vision_patches.float()
+                vision_patches
             )  # (n_patches, hidden_size)
             vision_embeds = torch.cat(
                 [
@@ -420,7 +418,6 @@ class SoloForCausalLM(MistralForCausalLM):
         output_attentions: Optional[bool] = None,
         output_hidden_states: Optional[bool] = None,
         return_dict: Optional[bool] = None,
-        **kwargs,
     ) -> Union[Tuple, CausalLMOutputWithPast]:
         r"""
         Args:
