@@ -129,6 +129,7 @@ class SoloConfig(PretrainedConfig):
         self.num_hidden_layers = num_hidden_layers
         self.num_attention_heads = num_attention_heads
         self.sliding_window = sliding_window
+        self.head_dim = kwargs.get('head_dim', 64)
 
         # for backward compatibility
         if num_key_value_heads is None:
