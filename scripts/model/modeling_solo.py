@@ -421,6 +421,9 @@ class SoloForCausalLM(MistralForCausalLM):
         output_hidden_states: Optional[bool] = None,
         return_dict: Optional[bool] = None,
     ) -> Union[Tuple, CausalLMOutputWithPast]:
+        
+        if 'cache_position' in kwargs:
+            del kwargs['cache_position']
         r"""
         Args:
             labels (`torch.LongTensor` of shape `(batch_size, sequence_length)`, *optional*):
