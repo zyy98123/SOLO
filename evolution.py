@@ -106,7 +106,7 @@ def prepare_inputs(inputs: list, device: str):
     vision_patch_indices = torch.Tensor(vision_patch_indices).long()
 
     # 检查长度是否一致
-    import pdb; pdb.set_trace()  # 在这里插入断点，检查tokens和vision_patch_indices的长度和内容
+    #import pdb; pdb.set_trace()  # 在这里插入断点，检查tokens和vision_patch_indices的长度和内容
     assert tokens.shape == vision_patch_indices.shape, "tokens and vision_patch_indices should have the same shape"
 
     # move to device
