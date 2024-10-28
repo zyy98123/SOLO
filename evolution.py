@@ -154,7 +154,7 @@ def run_inference_and_print_outputs(
         )
     visualize_outputs(inputs, tokens, outputs)
 
-img_base64 = load_image_to_base64(f"{project_root}/westai0019/HOLO/testIMG.png")
+img_base64 = load_image_to_base64(f"{project_root}/HOLO/testIMG.png")
 img_patches = convert_image_base64_to_patches(img_base64)
 print(f"patch shape: {img_patches.shape}")
 visualize_patches(img_patches)
@@ -165,7 +165,7 @@ inputs = [
 ]
 run_inference_and_print_outputs(inputs)
 
-fig1_img_base64 = load_image_to_base64(f"{project_root}/westai0019/HOLO/testIMG.png")
+fig1_img_base64 = load_image_to_base64(f"{project_root}/HOLO/testIMG.png")
 fig1_img_patches = convert_image_base64_to_patches(fig1_img_base64)
 print(f"patch shape: {fig1_img_patches.shape}")
 visualize_patches(fig1_img_patches)
