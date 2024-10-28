@@ -92,6 +92,17 @@ def prepare_inputs(inputs: list, device: str):
             attention_masks.extend(cur_attention_mask)
             vision_patch_indices.extend([NON_VISION_TOKEN] * len(cur_tokens))
 
+        # 确保 tokens 和 vision_patch_indices 的长度一致
+    max_length = max(len(tokens), len(vision_patch_indices))
+    if len(tokens) < max_length:
+        padding_length = max_length - len(tokens)
+        tokens = torch.cat([tokens, torch.full((padding_length,), tokenizer.pad_token_id, dtype=torch.long)])
+        attention_masks = torch.cat([attention_masks, torch.zeros(padding_length, dtype=torch.long)])
+    elif len(vision_patch_indices) < max_length:
+        padding_length = max_length - len(vision_patch_indices)
+        vision_patch_indices = torch.cat([vision_patch_indices, torch.full((padding_length,), NON_VISION_TOKEN, dtype=torch.long)])
+
+
     tokens = torch.Tensor(tokens).long()
     attention_masks = torch.Tensor(attention_masks).long()
     if len(vision_patches) > 0:
