@@ -60,16 +60,21 @@ def prepare_inputs(inputs: list, device: str):
             img_tokens = ["<vision>"]
             cur_patch_indices = [NON_VISION_TOKEN]
 
+            # 初始化视觉补丁索引
+            current_patch_index = 0
+
             for row_idx in range(n_rows):
                 if row_idx != 0:
                     img_tokens.append("<vrow_sep>")
                     cur_patch_indices.append(NON_VISION_TOKEN)
                 for col_idx in range(n_cols):
                     img_tokens.append("<vpatch>")
-                    cur_patch_indices.append(len(vision_patches) + row_idx * n_cols + col_idx)
+                    cur_patch_indices.append(current_patch_index)
+                    current_patch_index += 1  # 按顺序增加补丁索引
 
             img_tokens.append("</vision>")
             cur_patch_indices.append(NON_VISION_TOKEN)
+
 
             # ---
             cur_tokens = torch.Tensor(tokenizer.convert_tokens_to_ids(img_tokens))
