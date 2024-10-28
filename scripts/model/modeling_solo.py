@@ -265,9 +265,12 @@ class MultimodalMistralModel(MistralModel):
             inputs_embeds = self.embed_tokens(input_ids)
 
             # === Handle vision patches ===
-            vision_embeds = self.embed_vision_patch(
-                vision_patches
-            )  # (n_patches, hidden_size)
+            if vision_patches is not None:
+                vision_embeds = self.embed_vision_patch(vision_patches)  # (n_patches, hidden_size)
+    # 其他处理逻辑...
+            else:
+                vision_embeds = torch.zeros(1, self.config.hidden_size).to(inputs_embeds.device)
+
             vision_embeds = torch.cat(
                 [
                     vision_embeds,
