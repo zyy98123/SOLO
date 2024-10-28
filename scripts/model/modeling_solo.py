@@ -287,9 +287,22 @@ class MultimodalMistralModel(MistralModel):
             ]  # (batch_size, seq_length, hidden_size)
 
             # merge vision_embeds with inputs_embeds
-            if inputs_embeds.shape[1] < vision_embeds.shape[1]:
-                inputs_embeds = inputs_embeds.expand(-1, vision_embeds.shape[1], -1)
+            # Get the maximum length between inputs_embeds and vision_embeds
+            max_length = max(inputs_embeds.shape[1], vision_embeds.shape[1])
+
+            # Padding inputs_embeds to the maximum length if necessary
+            if inputs_embeds.shape[1] < max_length:
+                padding = torch.zeros((inputs_embeds.shape[0], max_length - inputs_embeds.shape[1], inputs_embeds.shape[2])).to(inputs_embeds.device)
+                inputs_embeds = torch.cat([inputs_embeds, padding], dim=1)
+
+            # Padding vision_embeds to the maximum length if necessary
+            if vision_embeds.shape[1] < max_length:
+                padding = torch.zeros((vision_embeds.shape[0], max_length - vision_embeds.shape[1], vision_embeds.shape[2])).to(vision_embeds.device)
+                vision_embeds = torch.cat([vision_embeds, padding], dim=1)
+
+            # Now clone inputs_embeds and add vision_embeds
             inputs_embeds = inputs_embeds.clone() + vision_embeds
+
 
 
         if (
