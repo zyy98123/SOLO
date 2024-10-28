@@ -284,7 +284,10 @@ class MultimodalMistralModel(MistralModel):
             ]  # (batch_size, seq_length, hidden_size)
 
             # merge vision_embeds with inputs_embeds
+            if inputs_embeds.shape[1] < vision_embeds.shape[1]:
+                inputs_embeds = inputs_embeds.expand(-1, vision_embeds.shape[1], -1)
             inputs_embeds += vision_embeds
+
 
         if (
             attention_mask is not None
