@@ -263,9 +263,6 @@ class MultimodalMistralModel(MistralModel):
 
         if inputs_embeds is None:
             inputs_embeds = self.embed_tokens(input_ids)
-            assert (
-                vision_patch_indices.shape == input_ids.shape
-            ), "vision_patch_indices and input_ids should have the same shape"
 
             # === Handle vision patches ===
             vision_embeds = self.embed_vision_patch(
