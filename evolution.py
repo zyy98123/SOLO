@@ -23,7 +23,7 @@ from scripts.model.modeling_solo import SoloForCausalLM, SoloConfig
 MODEL_NAME = "YangyiYY/SOLO-7B"
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-base_model = SoloForCausalLM.from_pretrained(MODEL_NAME)
+model = SoloForCausalLM.from_pretrained(MODEL_NAME)
 
 
 DEVICE = "cuda:0"
