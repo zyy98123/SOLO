@@ -149,6 +149,6 @@ print(f"patch shape: {dog_img_patches.shape}")
 
 inputs = [
     dog_img_patches,
-    "Which option describe the object relationship in the image correctly? Options: A: The suitcase is on the book., B: The suitcase is beneath the cat., C: The suitcase is beneath the bed., D: The suitcase is beneath the book."
+    "This is a"
 ]
 run_inference_and_print_outputs(inputs)
