@@ -142,7 +142,7 @@ def run_inference_and_print_outputs(
     
     visualize_outputs(inputs, tokens, outputs)
     
-dog_img_base64 = load_image_to_base64(f"{project_root}/HOLO/testIMG.png")
+dog_img_base64 = load_image_to_base64("/p/project1/westai0019/HOLO/testIMG.png")
 dog_img_patches = convert_image_base64_to_patches(dog_img_base64)
 print(f"patch shape: {dog_img_patches.shape}")
 # visualize_patches(dog_img_patches)
