@@ -49,7 +49,7 @@ def prepare_inputs(inputs: list, device: str):
     for i in inputs:
         if isinstance(i, torch.Tensor):
             # 生成视觉补丁部分
-            import pdb; pdb.set_trace()  # 插入断点检查补丁生成逻辑
+            #import pdb; pdb.set_trace()  # 插入断点检查补丁生成逻辑
             
             patches = i
             n_rows, n_cols = patches.shape[:2]
