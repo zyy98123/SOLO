@@ -286,7 +286,7 @@ class MultimodalMistralModel(MistralModel):
             # merge vision_embeds with inputs_embeds
             if inputs_embeds.shape[1] < vision_embeds.shape[1]:
                 inputs_embeds = inputs_embeds.expand(-1, vision_embeds.shape[1], -1)
-            inputs_embeds += vision_embeds
+            inputs_embeds = inputs_embeds.clone() + vision_embeds
 
 
         if (
