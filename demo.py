@@ -142,13 +142,13 @@ def run_inference_and_print_outputs(
     
     visualize_outputs(inputs, tokens, outputs)
     
-dog_img_base64 = load_image_to_base64("C://Users//93293//testIMG.png")
+dog_img_base64 = load_image_to_base64(f"{project_root}/HOLO/testIMG.png")
 dog_img_patches = convert_image_base64_to_patches(dog_img_base64)
 print(f"patch shape: {dog_img_patches.shape}")
 # visualize_patches(dog_img_patches)
 
 inputs = [
     dog_img_patches,
-    "This is a"
+    "Which option describe the object relationship in the image correctly? Options: A: The suitcase is on the book., B: The suitcase is beneath the cat., C: The suitcase is beneath the bed., D: The suitcase is beneath the book."
 ]
 run_inference_and_print_outputs(inputs)
