@@ -1,4 +1,6 @@
 2024/10/30
+SOLO result：
+
 MMStar result：
 split                    none
 Overall                  0.3426666666666667
@@ -272,3 +274,292 @@ volcano                    0.375
 waterCNPCycle              0.4090909090909091
 -------------------------  -------------------
 (vlmeval) [zhang58@jrlogin04 VLMEvalKit]$
+
+
+
+
+#####################################
+llava_v1.5_7b text result：
+
+MMStar:
+[2024-11-02 13:03:35] INFO - run.py: main - 232: The evaluation of model llava_v1.5_7b x dataset MMStar has finished!
+[2024-11-02 13:03:35,617] INFO - RUN - run.py: main - 233: Evaluation Results:
+[2024-11-02 13:03:35] INFO - run.py: main - 233: Evaluation Results:
+[2024-11-02 13:03:35,618] INFO - RUN - run.py: main - 239:
+-----------------------  -------------------
+split                    none
+Overall                  0.32666666666666666
+coarse perception        0.588
+fine-grained perception  0.22
+instance reasoning       0.416
+logical reasoning        0.24
+math                     0.244
+science & technology     0.252
+-----------------------  -------------------
+[2024-11-02 13:03:35] INFO - run.py: main - 239:
+-----------------------  -------------------
+split                    none
+Overall                  0.32666666666666666
+coarse perception        0.588
+fine-grained perception  0.22
+instance reasoning       0.416
+logical reasoning        0.24
+math                     0.244
+science & technology     0.252
+-----------------------  -------------------
+
+MME:
+[2024-11-02 13:21:19] INFO - run.py: main - 232: The evaluation of model llava_v1.5_7b x dataset MME has finished!
+[2024-11-02 13:21:19,566] INFO - RUN - run.py: main - 233: Evaluation Results:
+[2024-11-02 13:21:19] INFO - run.py: main - 233: Evaluation Results:
+[2024-11-02 13:21:19,611] INFO - RUN - run.py: main - 239:
+---------------------  ---------
+perception             1341.06
+reasoning               302.143
+OCR                     127.5
+artwork                 113.5
+celebrity               124.118
+code_reasoning           62.5
+color                   156.667
+commonsense_reasoning   107.143
+count                    93.3333
+existence               185
+landmark                136.25
+numerical_calculation    40
+position                110
+posters                 143.197
+scene                   151.5
+text_translation         92.5
+---------------------  ---------
+[2024-11-02 13:21:19] INFO - run.py: main - 239:
+---------------------  ---------
+perception             1341.06
+reasoning               302.143
+OCR                     127.5
+artwork                 113.5
+celebrity               124.118
+code_reasoning           62.5
+color                   156.667
+commonsense_reasoning   107.143
+count                    93.3333
+existence               185
+landmark                136.25
+numerical_calculation    40
+position                110
+posters                 143.197
+scene                   151.5
+text_translation         92.5
+---------------------  ---------
+
+
+SEEDBench_IMG:
+--------------------  -------------------
+split                 none
+Overall               0.6013912310286678
+Instance Attributes   0.6689610668961067
+Instance Identity     0.6635718186783178
+Instance Interaction  0.7010309278350515
+Instance Location     0.5828220858895705
+Instances Counting    0.27421332243563545
+Scene Understanding   0.7283090563647878
+Spatial Relation      0.5083713850837138
+Text Understanding    0.42857142857142855
+Visual Reasoning      0.770392749244713
+--------------------  -------------------
+[2024-11-02 15:01:59] INFO - run.py: main - 239:
+--------------------  -------------------
+split                 none
+Overall               0.6013912310286678
+Instance Attributes   0.6689610668961067
+Instance Identity     0.6635718186783178
+Instance Interaction  0.7010309278350515
+Instance Location     0.5828220858895705
+Instances Counting    0.27421332243563545
+Scene Understanding   0.7283090563647878
+Spatial Relation      0.5083713850837138
+Text Understanding    0.42857142857142855
+Visual Reasoning      0.770392749244713
+
+scienceQA：
+-----------------------------------  -------------------
+split                                val
+Overall                              0.6542680019074869
+Adaptations                          0.8125
+Adaptations and natural selection    1.0
+Age of Exploration                   1.0
+Ancient Egypt and Kush               0.0
+Ancient Mesopotamia                  1.0
+Animals                              1.0
+Astronomy                            0.4782608695652174
+Atoms and molecules                  0.7380952380952381
+Basic economic principles            0.421875
+Chemical reactions                   1.0
+Cities                               0.5
+Classification                       0.8452380952380952
+Classification and scientific names  0.8936170212765957
+Climate change                       1.0
+Colonial America                     0.5952380952380952
+Context clues                        0.6
+Descriptive details                  1.0
+Designing experiments                0.9193548387096774
+Domain-specific vocabulary           0.4
+Early 19th century American history  0.0
+Early Americas                       1.0
+Earth events                         0.75
+Ecological interactions              0.56
+Ecosystems                           0.8208955223880597
+Engineering practices                0.9622641509433962
+English colonies in North America    0.46153846153846156
+Force and motion                     0.68
+Fossils                              0.47058823529411764
+Genes to traits                      0.2127659574468085
+Geography                            0.4507042253521127
+Government                           1.0
+Independent reading comprehension    1.0
+Informational texts: level 1         0.8
+Magnets                              0.3233082706766917
+Maps                                 0.3709677419354839
+Materials                            0.6982758620689655
+Medieval Asia                        0.0
+Natural resources and human impacts  0.5
+Oceania: geography                   0.3617021276595745
+Oceans and continents                1.0
+Oceans and continents                1.0
+Particle motion and energy           0.23529411764705882
+Persuasive strategies                0.3888888888888889
+Physical Geography                   0.813953488372093
+Plant reproduction                   0.6
+Plants                               1.0
+Plate tectonics                      1.0
+Read-alone texts                     1.0
+Rocks and minerals                   0.926829268292683
+Rome and the Byzantine Empire        0.5
+Scientific names                     0.8809523809523809
+Solutions                            0.5970149253731343
+State capitals                       0.9779874213836478
+States                               0.6666666666666666
+States of matter                     0.7105263157894737
+The American Revolution              0.6666666666666666
+The Americas: geography              0.36666666666666664
+The Antebellum period                1.0
+The Civil War and Reconstruction     0.0
+The Silk Road                        1.0
+Thermal energy                       0.6666666666666666
+Velocity, acceleration, and forces   0.19607843137254902
+Visual elements                      0.8888888888888888
+Water cycle                          1.0
+Weather and climate                  0.28125
+World religions                      0.6666666666666666
+-----------------------------------  -------------------
+[2024-11-04 17:06:33] INFO - run.py: main - 239:
+-----------------------------------  -------------------
+split                                val
+Overall                              0.6542680019074869
+Adaptations                          0.8125
+Adaptations and natural selection    1.0
+Age of Exploration                   1.0
+Ancient Egypt and Kush               0.0
+Ancient Mesopotamia                  1.0
+Animals                              1.0
+Astronomy                            0.4782608695652174
+Atoms and molecules                  0.7380952380952381
+Basic economic principles            0.421875
+Chemical reactions                   1.0
+Cities                               0.5
+Classification                       0.8452380952380952
+Classification and scientific names  0.8936170212765957
+Climate change                       1.0
+Colonial America                     0.5952380952380952
+Context clues                        0.6
+Descriptive details                  1.0
+Designing experiments                0.9193548387096774
+Domain-specific vocabulary           0.4
+Early 19th century American history  0.0
+Early Americas                       1.0
+Earth events                         0.75
+Ecological interactions              0.56
+Ecosystems                           0.8208955223880597
+Engineering practices                0.9622641509433962
+English colonies in North America    0.46153846153846156
+Force and motion                     0.68
+Fossils                              0.47058823529411764
+Genes to traits                      0.2127659574468085
+Geography                            0.4507042253521127
+Government                           1.0
+Independent reading comprehension    1.0
+Informational texts: level 1         0.8
+Magnets                              0.3233082706766917
+Maps                                 0.3709677419354839
+Materials                            0.6982758620689655
+Medieval Asia                        0.0
+Natural resources and human impacts  0.5
+Oceania: geography                   0.3617021276595745
+Oceans and continents                1.0
+Oceans and continents                1.0
+Particle motion and energy           0.23529411764705882
+Persuasive strategies                0.3888888888888889
+Physical Geography                   0.813953488372093
+Plant reproduction                   0.6
+Plants                               1.0
+Plate tectonics                      1.0
+Read-alone texts                     1.0
+Rocks and minerals                   0.926829268292683
+Rome and the Byzantine Empire        0.5
+Scientific names                     0.8809523809523809
+Solutions                            0.5970149253731343
+State capitals                       0.9779874213836478
+States                               0.6666666666666666
+States of matter                     0.7105263157894737
+The American Revolution              0.6666666666666666
+The Americas: geography              0.36666666666666664
+The Antebellum period                1.0
+The Civil War and Reconstruction     0.0
+The Silk Road                        1.0
+Thermal energy                       0.6666666666666666
+Velocity, acceleration, and forces   0.19607843137254902
+Visual elements                      0.8888888888888888
+Water cycle                          1.0
+Weather and climate                  0.28125
+World religions                      0.6666666666666666
+
+
+
+AI2D_TEST
+-------------------------  ------------------
+split                      none
+Overall                    0.5184585492227979
+atomStructure              0.5
+eclipses                   0.5483870967741935
+faultsEarthquakes          0.5714285714285714
+foodChainsWebs             0.5481927710843374
+lifeCycles                 0.460431654676259
+moonPhaseEquinox           0.4151624548736462
+partsOfA                   0.5749486652977412
+partsOfTheEarth            0.5769230769230769
+photosynthesisRespiration  0.5189873417721519
+rockCycle                  0.417910447761194
+rockStrata                 0.6097560975609756
+solarSystem                0.4166666666666667
+typesOf                    0.5014577259475219
+volcano                    0.625
+waterCNPCycle              0.4318181818181818
+-------------------------  ------------------
+[2024-11-04 17:32:15] INFO - run.py: main - 239:
+-------------------------  ------------------
+split                      none
+Overall                    0.5184585492227979
+atomStructure              0.5
+eclipses                   0.5483870967741935
+faultsEarthquakes          0.5714285714285714
+foodChainsWebs             0.5481927710843374
+lifeCycles                 0.460431654676259
+moonPhaseEquinox           0.4151624548736462
+partsOfA                   0.5749486652977412
+partsOfTheEarth            0.5769230769230769
+photosynthesisRespiration  0.5189873417721519
+rockCycle                  0.417910447761194
+rockStrata                 0.6097560975609756
+solarSystem                0.4166666666666667
+typesOf                    0.5014577259475219
+volcano                    0.625
+waterCNPCycle              0.4318181818181818
