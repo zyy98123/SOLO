@@ -87,6 +87,7 @@ def prepare_inputs(inputs: list, device: str):
             _tokenized = tokenizer(i, return_tensors="pt", add_special_tokens=False)
             cur_tokens = _tokenized["input_ids"].squeeze(0)
             cur_attention_mask = _tokenized["attention_mask"].squeeze(0)
+            #在这一部分输入文字的时候，tokens会增加但是vision_patch_indices只会正价相同数量的-1
 
             tokens.extend(cur_tokens)
             attention_masks.extend(cur_attention_mask)
